@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { IoSend } from "react-icons/io5";
+import { RiSendPlaneFill } from "react-icons/ri";
 import axios from "axios";
 import LoadingScreen from "./components/LoadingScreen";
 
@@ -13,6 +13,16 @@ type Message = {
   content: string;
   createdBy: CreatedByOptions;
   createdAt: string;
+};
+
+const plainCopyTextEventHandler = (e: ClipboardEvent) => {
+  e.preventDefault();
+
+  if (!e.clipboardData) return;
+
+  const text = e.clipboardData.getData("text/plain");
+
+  document.execCommand("insertHTML", false, text);
 };
 
 function App() {
@@ -29,13 +39,34 @@ function App() {
     }
   }, [messages]);
 
+  useEffect(() => {
+    const currentInputElement = inputElementRef.current;
+    if (!currentInputElement) {
+      return;
+    }
+
+    currentInputElement.addEventListener(
+      "paste",
+      plainCopyTextEventHandler,
+      true
+    );
+
+    return () => {
+      currentInputElement.removeEventListener(
+        "paste",
+        plainCopyTextEventHandler,
+        true
+      );
+    };
+  }, []);
+
   return (
     <div className="fixed flex justify-center items-center inset-0 bg-zinc-500">
       {isLoading && <LoadingScreen />}
       <div className="flex flex-col bg-white w-full h-full max-w-xl shadow-md shadow-black">
         <div
           ref={messagesElementRef}
-          className="flex flex-col h-full w-full overflow-y-auto"
+          className="flex flex-col h-full w-full overflow-y-auto bg-zinc-100"
         >
           {messages.map((message) => (
             <div
@@ -82,7 +113,7 @@ function App() {
             </div>
           ))}
         </div>
-        <div className="flex gap-4 justify-center items-center max-h-52 bg-blue-200 w-full p-4">
+        <div className="flex gap-4 justify-center items-center max-h-52 bg-zinc-200 w-full p-4">
           <div
             ref={inputElementRef}
             contentEditable
@@ -92,8 +123,8 @@ function App() {
             }
           />
           <div>
-            <IoSend
-              className="cursor-pointer text-4xl text-blue-600"
+            <RiSendPlaneFill
+              className="cursor-pointer bg-blue-600 rounded-full p-2 text-4xl text-white"
               onClick={() => {
                 setMessages((messages) => [
                   ...messages,
