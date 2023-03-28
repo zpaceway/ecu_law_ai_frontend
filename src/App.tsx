@@ -40,10 +40,10 @@ function App() {
           {messages.map((message) => (
             <div
               key={message.id}
-              className={`flex gap-2 px-4 ${
+              className={`flex gap-2 p-4 ${
                 message.createdBy === CreatedByOptions.USER
-                  ? "flex-row-reverse pt-8"
-                  : "pb-4"
+                  ? "flex-row-reverse"
+                  : ""
               }`}
             >
               <div className="shrink-0 grow-0 w-8 h-8 rounded-full overflow-hidden border">
