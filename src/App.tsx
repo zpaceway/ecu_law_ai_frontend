@@ -69,10 +69,10 @@ function App() {
                   }`}
                 >
                   <div
-                    className={`p-2 rounded-md ${
+                    className={`p-2 rounded-md max-w-[240px] ${
                       message.createdBy === CreatedByOptions.USER
-                        ? "text-right bg-blue-200"
-                        : "text-left bg-gray-200"
+                        ? "bg-blue-200"
+                        : "bg-gray-200"
                     }`}
                   >
                     {message.content}
